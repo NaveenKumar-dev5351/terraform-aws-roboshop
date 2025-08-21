@@ -37,7 +37,7 @@ resource "terraform_data" "main" {
   ]
 
  provisioner "file" {
-    source      = "bootstrap.sh"
+    source      = "bootstrapp.sh"
     destination = "/tmp/${var.component}.sh"
   }
 
