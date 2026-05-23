@@ -19,3 +19,35 @@ records per component type.
 ---
 
 ## 🏗️ Architecture
+                Internet
+                   │
+              Route53 DNS
+                   │
+          Frontend ALB (port 80/443)
+                   │
+          ┌────────┴────────┐
+          │                 │
+     Frontend           Backend ALB
+     (port 80)          (port 8080)
+          │                 │
+     ┌────┴────┐    ┌───────┼───────┐
+     │         │    │       │       │
+  Frontend  Catalogue  User  Cart  Payment
+     ASG      ASG    ASG   ASG    ASG
+
+### Golden AMI Flow
+EC2 Launch (base AMI)
+↓
+Bootstrap Script (install & configure app)
+↓
+Stop Instance
+↓
+Create AMI (Golden AMI)
+↓
+Terminate Instance
+↓
+Launch Template (uses Golden AMI)
+↓
+Auto Scaling Group
+↓
+Target Group + ALB Listener Rule
